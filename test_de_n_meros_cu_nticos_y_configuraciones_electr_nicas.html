@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Números Cuánticos y Configuraciones - 1º Bachillerato</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Outfit e Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX para Fórmulas Matemáticas y Químicas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+    }
+    
+    h1, h2, h3, .font-heading {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-card-hover:hover {
+      background: rgba(51, 65, 85, 0.8);
+      border-color: rgba(129, 140, 248, 0.4);
+    }
+
+    .option-btn {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glow-purple {
+      box-shadow: 0 0 25px -5px rgba(124, 58, 237, 0.3);
+    }
+
+    .glow-emerald {
+      box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.35s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 flex flex-col min-h-screen">
+
+  <header class="border-b border-slate-800 bg-slate-950/80 sticky top-0 z-40 backdrop-blur-md">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/30">
+          ⚛️
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-100 leading-tight">Química 1º Bachillerato</h1>
+          <p class="text-xs text-indigo-400 font-medium">Con el Profe Álex 👨‍🏫</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openAiGeneratorModal()" class="px-3 py-1.5 rounded-lg bg-indigo-900/60 hover:bg-indigo-800 text-indigo-300 border border-indigo-700/50 text-xs md:text-sm font-medium transition flex items-center gap-1.5">
+          <span>🔮</span>
+          <span class="hidden md:inline">Generar Ejercicios IA</span>
+        </button>
+        <button onclick="openVisionModal()" class="px-3 py-1.5 rounded-lg bg-purple-900/60 hover:bg-purple-800 text-purple-300 border border-purple-700/50 text-xs md:text-sm font-medium transition flex items-center gap-1.5">
+          <span>📷</span>
+          <span class="hidden md:inline">Resolver Foto</span>
+        </button>
+        <button onclick="openCheatsheet()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 hover:text-white text-xs md:text-sm font-medium border border-slate-700 transition flex items-center gap-1.5">
+          <span>📚</span>
+          <span class="hidden sm:inline">Chuleta del Profe</span>
+          <span class="sm:hidden">Chuleta</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Botón Flotante para Chat con Profe Álex IA -->
+  <button onclick="toggleAiChatModal()" class="fixed bottom-5 right-5 z-40 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white p-3.5 rounded-full shadow-2xl flex items-center gap-2 font-bold text-sm transition transform hover:scale-105 active:scale-95 border border-indigo-300/30 glow-purple">
+    <span class="text-xl">💬</span>
+    <span class="hidden sm:inline">Dudas con Profe Álex IA</span>
+  </button>
+
+  <main class="flex-grow max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center">
+
+    <!-- 1. PANTALLA DE INICIO -->
+    <div id="start-screen" class="fade-in space-y-6 text-center py-6">
+      <div class="glass-card rounded-2xl p-6 md:p-8 text-left relative overflow-hidden border-l-4 border-l-indigo-500 glow-purple">
+        <div class="flex flex-col md:flex-row gap-5 items-start md:items-center">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-3xl shadow-lg shrink-0">
+            👨‍🏫
+          </div>
+          <div class="space-y-2">
+            <div class="inline-block px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-xs font-semibold border border-indigo-500/20">
+              ¡Bienvenidos a clase!
+            </div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-white">Cuestionario: Números Cuánticos y Estructura Electrónica</h2>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              ¡Hola a todos! Soy Álex, vuestro nuevo profesor de Química. Para evaluar el tema del átomo en <strong>1º de Bachillerato</strong>, he preparado este test interactivo de <strong>20 preguntas</strong>. Revisaremos desde el significado de $(n, \ell, m_\ell, m_s)$ hasta configuraciones complejas, anomalías ($Cr, Cu$), iones y el principio de Hund.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-left">
+        <div class="glass-card p-4 rounded-xl">
+          <div class="text-slate-400 text-xs uppercase font-semibold">Preguntas</div>
+          <div class="text-xl font-bold text-indigo-400">20 Reactivos</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl">
+          <div class="text-slate-400 text-xs uppercase font-semibold">Nivel</div>
+          <div class="text-xl font-bold text-purple-400">1º Bachillerato</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl">
+          <div class="text-slate-400 text-xs uppercase font-semibold">Formato</div>
+          <div class="text-xl font-bold text-emerald-400">Opción Múltiple</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl">
+          <div class="text-slate-400 text-xs uppercase font-semibold">Ayudas</div>
+          <div class="text-xl font-bold text-amber-400">Pistas del Profe</div>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <button onclick="startQuiz()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 font-bold text-lg text-white shadow-lg shadow-indigo-500/25 transform hover:-translate-y-0.5 transition active:translate-y-0">
+          🚀 ¡Empezar el Test con el Profe!
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. PANTALLA DE PREGUNTAS -->
+    <div id="quiz-screen" class="hidden fade-in space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 glass-card p-4 rounded-xl">
+        <div class="flex items-center gap-3">
+          <span id="question-badge" class="px-3 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 text-xs font-bold border border-indigo-500/30">
+            Pregunta 1 de 20
+          </span>
+          <span id="category-badge" class="text-xs text-slate-400 font-medium">
+            Números Cuánticos
+          </span>
+        </div>
+        
+        <div class="flex items-center gap-4 text-sm font-semibold">
+          <div class="text-emerald-400 flex items-center gap-1">
+            <span>Aciertos:</span>
+            <span id="score-counter" class="text-base font-bold">0</span>
+          </div>
+          <div class="text-amber-400 flex items-center gap-1">
+            <span>🔥 Racha:</span>
+            <span id="streak-counter" class="text-base font-bold">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+        <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full transition-all duration-300 w-0"></div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 md:p-8 space-y-6">
+        <div id="question-text" class="text-lg md:text-xl font-medium text-slate-100 leading-relaxed">
+          <!-- Texto inyectado dinámicamente -->
+        </div>
+
+        <div class="border-t border-slate-800 pt-4">
+          <button id="hint-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1.5 transition">
+            <span>💡</span>
+            <span>¿Necesitas una pista del profe?</span>
+          </button>
+          <div id="hint-box" class="hidden mt-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200/90 leading-relaxed">
+            <!-- Pista inyectada dinámicamente -->
+          </div>
+        </div>
+
+        <div id="options-container" class="grid grid-cols-1 gap-3 pt-2">
+          <!-- Opciones inyectadas dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div id="feedback-card" class="hidden glass-card rounded-2xl p-6 border-l-4 space-y-4 fade-in">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2 font-bold text-lg" id="feedback-title">
+            <!-- Título Feedback -->
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="speakCurrentExplanation()" id="tts-btn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 text-xs font-semibold border border-indigo-500/30 transition flex items-center gap-1">
+              <span>🎙️</span>
+              <span>Escuchar Voz IA</span>
+            </button>
+            <button onclick="askAiDeepExplanation()" id="ai-explain-btn" class="px-3 py-1.5 rounded-lg bg-indigo-900/60 hover:bg-indigo-800 text-indigo-200 text-xs font-semibold border border-indigo-500/40 transition flex items-center gap-1">
+              <span>✨</span>
+              <span>Explicar más con IA</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="feedback-explanation" class="text-slate-300 text-sm leading-relaxed">
+          <!-- Explicación pedagógica -->
+        </div>
+
+        <div id="ai-deep-explanation" class="hidden p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-xs md:text-sm text-indigo-100 space-y-2">
+          <div class="font-bold text-indigo-300 flex items-center gap-1.5">
+            <span>✨ Profundización del Profe Álex IA:</span>
+          </div>
+          <div id="ai-deep-text" class="leading-relaxed">
+            <!-- Inyectado por Gemini API -->
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+          <button id="next-btn" onclick="nextQuestion()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-bold text-white text-sm shadow-md transition">
+            Siguiente Pregunta ➔
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. PANTALLA DE RESULTADOS -->
+    <div id="results-screen" class="hidden fade-in space-y-6 py-4">
+      <div class="glass-card rounded-2xl p-6 md:p-8 text-center space-y-4 glow-purple">
+        <div class="inline-block p-4 rounded-full bg-slate-800/80 border border-slate-700 text-4xl mb-2" id="result-emoji">
+          🎓
+        </div>
+        <h2 class="text-3xl font-extrabold text-white">¡Test Finalizado!</h2>
+        <p class="text-slate-300 text-sm max-w-md mx-auto">
+          Aquí tienes la evaluación detallada de tu prueba de números cuánticos y configuraciones electrónicas.
+        </p>
+
+        <div class="py-4 flex justify-center items-baseline gap-2">
+          <span class="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400" id="final-grade">
+            0.0
+          </span>
+          <span class="text-slate-400 font-bold text-xl">/ 10</span>
+        </div>
+
+        <div id="grade-badge" class="inline-block px-4 py-1.5 rounded-full text-sm font-bold">
+          <!-- Badge de nota -->
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 border-l-4 border-l-indigo-500 space-y-2">
+        <div class="flex items-center gap-2 text-indigo-300 font-bold text-base">
+          <span>👨‍🏫 Nota del Profe Álex:</span>
+        </div>
+        <p id="teacher-feedback" class="text-slate-300 text-sm leading-relaxed italic">
+          <!-- Mensaje motivacional personalizado -->
+        </p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <span>📊</span>
+          <span>Rendimiento por Contenidos</span>
+        </h3>
+        <div id="category-breakdown" class="space-y-3">
+          <!-- Barras de rendimiento inyectadas por JS -->
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <button onclick="restartQuiz()" class="flex-1 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-bold text-white text-sm shadow-md transition">
+          🔄 Repetir Cuestionario
+        </button>
+        <button onclick="openCheatsheet()" class="flex-1 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-indigo-300 border border-slate-700 text-sm transition">
+          📚 Consultar Chuleta del Profe
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: LA CHULETA DEL PROFE -->
+  <div id="cheatsheet-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden fade-in">
+      <div class="p-4 md:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">📚</span>
+          <h3 class="text-lg font-bold text-white">La Chuleta de Química de 1º Bachillerato</h3>
+        </div>
+        <button onclick="closeCheatsheet()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center font-bold text-sm transition">✕</button>
+      </div>
+
+      <div class="p-5 md:p-6 space-y-6 overflow-y-auto text-sm text-slate-300">
+        <div class="space-y-3">
+          <h4 class="font-bold text-indigo-400 text-base">1. Los 4 Números Cuánticos $(n, \ell, m_\ell, m_s)$</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700">
+              <strong class="text-white block font-semibold">Principal ($n$):</strong> Nivel de energía ($1, 2, 3, 4\dots$).
+            </div>
+            <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700">
+              <strong class="text-white block font-semibold">Azimutal ($\ell$):</strong> Forma del orbital ($\ell = 0\dots n-1$).
+              <span class="block text-xs text-indigo-300 mt-1">$\ell=0\,(s)$, $\ell=1\,(p)$, $\ell=2\,(d)$, $\ell=3\,(f)$</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700">
+              <strong class="text-white block font-semibold">Magnético ($m_\ell$):</strong> Orientación espacial ($-\ell\dots 0\dots +\ell$).
+            </div>
+            <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700">
+              <strong class="text-white block font-semibold">Spin ($m_s$):</strong> Giro del electrón ($+\frac{1}{2}, -\frac{1}{2}$).
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-bold text-purple-400 text-base">2. Reglas de Construcción Electrónica</h4>
+          <ul class="space-y-2 list-disc list-inside bg-slate-800/40 p-4 rounded-xl border border-slate-800">
+            <li><strong>Madelung ($n + \ell$):</strong> Se llenan primero subniveles con menor $n + \ell$. A igual valor, el de menor $n$. (Ej: $4s$ antes que $3d$).</li>
+            <li><strong>Exclusión de Pauli:</strong> Máximo 2 electrones por orbital con espines opuestos.</li>
+            <li><strong>Regla de Hund:</strong> En subniveles degenerados, los electrones ocupan primero orbitales distintos con espines paralelos.</li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-bold text-emerald-400 text-base">3. Excepciones Clásicas ($Cr$ y $Cu$)</h4>
+          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs md:text-sm space-y-1">
+            <p>• <strong>Cromo ($Z = 24$):</strong> $[\text{Ar}]\, 4s^1 \, 3d^5$ <em>(en vez de $4s^2 3d^4$)</em></p>
+            <p>• <strong>Cobre ($Z = 29$):</strong> $[\text{Ar}]\, 4s^1 \, 3d^{10}$ <em>(en vez de $4s^2 3d^9$)</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-800 bg-slate-950/50 flex justify-end">
+        <button onclick="closeCheatsheet()" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs md:text-sm transition">
+          ¡Entendido!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CHAT CON PROFE ÁLEX IA -->
+  <div id="chat-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full h-[80vh] flex flex-col shadow-2xl overflow-hidden fade-in">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">👨‍🏫</span>
+          <div>
+            <h3 class="text-base font-bold text-white">Chat Tutor con Profe Álex IA</h3>
+            <p class="text-xs text-indigo-400">Impulsado por Gemini 3 Flash</p>
+          </div>
+        </div>
+        <button onclick="toggleAiChatModal()" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center font-bold text-sm">✕</button>
+      </div>
+
+      <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-3 text-sm">
+        <div class="bg-indigo-950/50 border border-indigo-800/40 p-3 rounded-xl text-indigo-100 max-w-[85%]">
+          ¡Hola! Soy el Profe Álex. ¿Tienes alguna duda sobre números cuánticos, configuraciones electrónicas, diagramas de Moeller o excepciones como Cromo y Cobre? ¡Pregúntame lo que quieras! ⚛️
+        </div>
+      </div>
+
+      <div class="p-3 border-t border-slate-800 bg-slate-950/60 flex gap-2">
+        <input type="text" id="chat-input" placeholder="Escribe tu duda de Química..." class="flex-grow bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500" onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button onclick="sendChatMessage()" id="chat-send-btn" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm transition">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GENERADOR DE EJERCICIOS CON IA -->
+  <div id="ai-generator-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 space-y-4 fade-in">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <span>🔮</span>
+          <span>Generar Pregunta IA Personalizada</span>
+        </h3>
+        <button onclick="closeAiGeneratorModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      <p class="text-xs text-slate-300">
+        Escribe un elemento, tipo de problema o concepto y Gemini creará una nueva pregunta tipo test de 1º de Bachillerato:
+      </p>
+      <input type="text" id="ai-topic-input" placeholder="Ej: Catión Hierro III, Cobre, Carga nuclear efectiva..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500">
+      <button onclick="generateCustomAiQuestion()" id="gen-q-btn" class="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 font-bold text-white text-sm rounded-xl shadow-lg transition">
+        ✨ Crear Pregunta y Añadir al Test
+      </button>
+      <div id="gen-q-status" class="text-xs text-center text-indigo-400 hidden">Generando pregunta con Gemini...</div>
+    </div>
+  </div>
+
+  <!-- MODAL: RESOLUCIÓN POR FOTO -->
+  <div id="vision-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-6 space-y-4 fade-in max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <span>📷</span>
+          <span>Resolver Ejercicio de Química con Foto</span>
+        </h3>
+        <button onclick="closeVisionModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      <p class="text-xs text-slate-300">
+        Sube una foto de tus apuntes o problema de números cuánticos para recibir su resolución paso a paso:
+      </p>
+      <input type="file" id="vision-file-input" accept="image/*" class="text-xs text-slate-300 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-indigo-600 file:text-white file:font-semibold hover:file:bg-indigo-500 cursor-pointer">
+      <div id="vision-preview" class="hidden max-h-48 rounded-xl overflow-hidden border border-slate-700">
+        <img id="vision-img-element" class="w-full object-contain max-h-48" alt="Vista previa" />
+      </div>
+      <button onclick="analyzeVisionImage()" id="vision-analyze-btn" class="w-full py-3 bg-purple-600 hover:bg-purple-500 font-bold text-white text-sm rounded-xl transition">
+        🔍 Analizar y Resolver con Gemini
+      </button>
+      <div id="vision-result" class="hidden p-4 bg-slate-950/60 rounded-xl border border-purple-500/30 text-xs md:text-sm text-slate-200 space-y-2 leading-relaxed">
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION BOX -->
+  <div id="toast-msg" class="fixed top-5 right-5 z-50 hidden px-4 py-3 rounded-xl bg-indigo-600 text-white font-medium text-sm shadow-xl border border-indigo-400 transition-all">
+  </div>
+
+  <script>
+    // BD DE 20 PREGUNTAS
+    const questions = [
+      {
+        id: 1,
+        category: "Números Cuánticos",
+        question: "¿Qué valores puede tomar el número cuántico secundario o azimutal ($\\ell$) para un nivel de energía principal $n = 3$?",
+        options: [
+          "$\\ell = 0, 1, 2$",
+          "$\\ell = 1, 2, 3$",
+          "$\\ell = -2, -1, 0, +1, +2$",
+          "$\\ell = 0, 1, 2, 3$"
+        ],
+        correct: 0,
+        hint: "Recuerda la regla matemática: $\\ell$ varía desde $0$ hasta $(n - 1)$.",
+        explanation: "Para un valor dado de $n$, el número cuántico azimutal $\\ell$ toma valores enteros comprendidos desde $0$ hasta $(n-1)$. Para $n = 3$, los valores permitidos son $\\ell = 0$ (subnivel $s$), $\\ell = 1$ (subnivel $p$) y $\\ell = 2$ (subnivel $d$)."
+      },
+      {
+        id: 2,
+        category: "Números Cuánticos",
+        question: "¿Qué propiedad física del orbital atómico está determinada principalmente por el número cuántico secundario ($\\ell$)?",
+        options: [
+          "El nivel de energía principal y el tamaño del átomo",
+          "La forma geométrica del orbital ($s, p, d, f$)",
+          "La orientación espacial de la nube electrónica",
+          "El sentido de giro del electrón sobre su propio eje"
+        ],
+        correct: 1,
+        hint: "Piensa en las letras $s$ (esférica), $p$ (lobular/mancuerna), etc.",
+        explanation: "El número cuántico secundario $\\ell$ define la forma del orbital. $\\ell=0$ es esférico ($s$), $\\ell=1$ tiene forma lobular ($p$), $\\ell=2$ forma de trébol ($d$), etc."
+      },
+      {
+        id: 3,
+        category: "Números Cuánticos",
+        question: "Para un electrón situado en un subnivel $p$ (donde $\\ell = 1$), ¿cuáles son los posibles valores del número cuántico magnético ($m_\\ell$)?",
+        options: [
+          "$m_\\ell = 0, 1$",
+          "$m_\\ell = -1, 0, +1$",
+          "$m_\\ell = -2, -1, 0, +1, +2$",
+          "$m_\\ell = +\\frac{1}{2}, -\\frac{1}{2}$"
+        ],
+        correct: 1,
+        hint: "El número magnético $m_\\ell$ varía desde $-\\ell$ hasta $+\\ell$ pasando por cero.",
+        explanation: "Como $\\ell = 1$, los valores de $m_\\ell$ varían en el rango $[-\\ell, +\\ell]$, dando $m_\\ell = -1, 0, +1$. Esto corresponde a los 3 orbitales degenerados del subnivel $p$ ($p_x, p_y, p_z$)."
+      },
+      {
+        id: 4,
+        category: "Números Cuánticos",
+        question: "¿Cuál de los siguientes conjuntos de números cuánticos $(n, \\ell, m_\\ell, m_s)$ representa un estado cuántico VÁLIDO y permitido para un electrón?",
+        options: [
+          "$(3, 3, 0, +\\frac{1}{2})$",
+          "$(2, 1, -2, -\\frac{1}{2})$",
+          "$(3, 2, -1, +\\frac{1}{2})$",
+          "$(1, 0, 0, +1)$"
+        ],
+        correct: 2,
+        hint: "Verifica que $\\ell < n$, $|m_\\ell| \\le \\ell$, y $m_s = \\pm\\frac{1}{2}$.",
+        explanation: "En $(3, 2, -1, +\\frac{1}{2})$: $n=3$, $\\ell=2$ (válido pues $\\ell < 3$), $m_\\ell=-1$ (válido pues $-2 \\le -1 \\le +2$) y $m_s = +\\frac{1}{2}$ (válido)."
+      },
+      {
+        id: 5,
+        category: "Estructura Electrónica",
+        question: "¿Cuál es el número máximo de electrones que se pueden alojar en un subnivel tipo $f$ (donde $\\ell = 3$)?",
+        options: [
+          "$6$ electrones",
+          "$10$ electrones",
+          "$14$ electrones",
+          "$18$ electrones"
+        ],
+        correct: 2,
+        hint: "Aplica la fórmula: Número de orbitales $= 2\\ell + 1$. Cada orbital aloja máximo 2 electrones.",
+        explanation: "Para $\\ell = 3$ ($subnivel f$), el número de orbitales es $2(3)+1 = 7$. Como cada orbital puede contener 2 electrones de spins opuestos, la capacidad máxima es $7 \\times 2 = 14$ electrones."
+      },
+      {
+        id: 6,
+        category: "Principios de Llenado",
+        question: "Según la regla de Madelung / Principio de Aufbau ($n + \\ell$), ¿cuál de los siguientes subniveles tiene menor energía y se llena PRIMERO?",
+        options: [
+          "Subnivel $3d$",
+          "Subnivel $4s$",
+          "Subnivel $4p$",
+          "Subnivel $4d$"
+        ],
+        correct: 1,
+        hint: "Calcula la suma $(n + \\ell)$ para $3d$ ($3+2=5$) y para $4s$ ($4+0=4$).",
+        explanation: "Para $4s$: $n+\\ell = 4+0 = 4$. Para $3d$: $n+\\ell = 3+2 = 5$. Como $4s$ tiene una suma $n+\\ell$ menor, posee menor energía y se ocupa antes que el subnivel $3d$."
+      },
+      {
+        id: 7,
+        category: "Configuraciones Electrónicas",
+        question: "¿Cuáles son los 4 números cuánticos del electrón diferenciador (último) del átomo de Azufre ($Z = 16$) en estado fundamental?",
+        options: [
+          "$(3, 1, -1, -\\frac{1}{2})$",
+          "$(3, 1, 0, +\\frac{1}{2})$",
+          "$(3, 2, -1, -\\frac{1}{2})$",
+          "$(3, 0, 0, -\\frac{1}{2})$"
+        ],
+        correct: 0,
+        hint: "La configuración del Azufre es $[\\text{Ne}] 3s^2 3p^4$. Distribuye los 4 electrones en las 3 casillas de $3p$.",
+        explanation: "El subnivel $3p$ tiene 4 electrones ($m_\\ell = -1, 0, +1$). Los primeros 3 entran con spin $+\\frac{1}{2}$. El 4º electrón entra en la casilla $m_\\ell = -1$ apareándose con spin $-\\frac{1}{2}$. Por tanto: $(3, 1, -1, -\\frac{1}{2})$."
+      },
+      {
+        id: 8,
+        category: "Anomalías y Excepciones",
+        question: "¿Cuál es la configuración electrónica correcta en estado fundamental del átomo de Cromo ($Z = 24$)?",
+        options: [
+          "$[\\text{Ar}] 4s^2 3d^4$",
+          "$[\\text{Ar}] 4s^1 3d^5$",
+          "$[\\text{Ar}] 4s^0 3d^6$",
+          "$[\\text{Ar}] 4s^2 3d^5$"
+        ],
+        correct: 1,
+        hint: "Es una excepción clásica: adquirir un subnivel $d^5$ semilleno otorga especial estabilidad.",
+        explanation: "El Cromo presenta la anomalía $[\text{Ar}] 4s^1 3d^5$. Promociona un electrón del $4s$ al $3d$ para lograr la alta estabilidad de tener el subnivel $d$ semilleno ($d^5$)."
+      },
+      {
+        id: 9,
+        category: "Iones y Configuraciones",
+        question: "¿Cuál es la configuración electrónica del catión Hierro II ($\\text{Fe}^{2+}$, $Z = 26$) en estado fundamental?",
+        options: [
+          "$[\\text{Ar}] 4s^2 3d^4$",
+          "$[\\text{Ar}] 3d^6$",
+          "$[\\text{Ar}] 4s^1 3d^5$",
+          "$[\\text{Ar}] 4s^2 3d^6$"
+        ],
+        correct: 1,
+        hint: "¡Cuidado! Al formar un catión, los electrones se pierden PRIMERO de la capa de mayor nivel principal $n$.",
+        explanation: "El átomo neutro de $\\text{Fe}$ es $[\text{Ar}] 4s^2 3d^6$. Al perder 2 electrones para formar $\\text{Fe}^{2+}$, se eliminan primero los 2 electrones del subnivel $4s$ (nivel $n=4$ más externo), quedando $[\text{Ar}] 3d^6$."
+      },
+      {
+        id: 10,
+        category: "Principios de Llenado",
+        question: "¿Qué principio de la mecánica cuántica establece que dos electrones de un mismo átomo jamás pueden tener sus cuatro números cuánticos idénticos?",
+        options: [
+          "Regla de Máxima Multiplicidad de Hund",
+          "Principio de Incertidumbre de Heisenberg",
+          "Principio de Exclusión de Pauli",
+          "Regla de Madelung"
+        ],
+        correct: 2,
+        hint: "Fue formulado por Wolfgang Pauli en 1925.",
+        explanation: "El Principio de Exclusión de Pauli dicta que dos electrones en un átomo no pueden compartir los 4 números cuánticos. Por ello, en un mismo orbital solo caben 2 electrones y con espines opuestos ($+\\frac{1}{2}$ y $-\\frac{1}{2}$)."
+      },
+      {
+        id: 11,
+        category: "Números Cuánticos",
+        question: "¿Cuántos orbitales atómicos existen en total en el nivel de energía principal $n = 4$?",
+        options: [
+          "$4$ orbitales",
+          "$8$ orbitales",
+          "$16$ orbitales",
+          "$32$ orbitales"
+        ],
+        correct: 2,
+        hint: "El número total de orbitales en un nivel $n$ viene dado por la fórmula $N_{\\text{orbitales}} = n^2$.",
+        explanation: "Para $n = 4$, el número total de orbitales es $n^2 = 4^2 = 16$ orbitales (1 orbital $s$, 3 orbitales $p$, 5 orbitales $d$ y 7 orbitales $f$: $1+3+5+7 = 16$)."
+      },
+      {
+        id: 12,
+        category: "Principios de Llenado",
+        question: "¿Cuántos electrones desapareados tiene un átomo de Nitrógeno ($Z = 7$) en su estado fundamental?",
+        options: [
+          "$1$ electrón desapareado",
+          "$2$ electrones desapareados",
+          "$3$ electrones desapareados",
+          "$0$ electrones desapareados"
+        ],
+        correct: 2,
+        hint: "Aplica la Regla de Hund para los 3 electrones del subnivel $2p^3$.",
+        explanation: "La configuración del Nitrógeno es $1s^2 2s^2 2p^3$. Por la regla de Hund, los 3 electrones de $2p$ entran en orbitales separados con espines paralelos ($p_x^1 p_y^1 p_z^1$), teniendo 3 electrones desapareados."
+      },
+      {
+        id: 13,
+        category: "Iones y Configuraciones",
+        question: "¿Cuál de los siguientes pares de especies químicas son ISOELECTRÓNICAS (mismo número de electrones)?",
+        options: [
+          "$\\text{Na}^+$ ($Z=11$) y $\\text{F}^-$ ($Z=9$)",
+          "$\\text{K}^+$ ($Z=19$) y $\\text{Na}^+$ ($Z=11$)",
+          "$\\text{Cl}^-$ ($Z=17$) y $\\text{O}^{2-}$ ($Z=8$)",
+          "$\\text{Mg}^{2+}$ ($Z=12$) y $\\text{Ar}$ ($Z=18$)"
+        ],
+        correct: 0,
+        hint: "Calcula los electrones netos: $\\text{Na}^+ = 11 - 1 = 10 e^-$; $\\text{F}^- = 9 + 1 = 10 e^-$.",
+        explanation: "Ambas especies poseen exactamente 10 electrones ($1s^2 2s^2 2p^6$), teniendo la misma configuración electrónica que el Neón ($Z=10$)."
+      },
+      {
+        id: 14,
+        category: "Números Cuánticos",
+        question: "¿Qué nos indica el número cuántico magnético ($m_\\ell$)?",
+        options: [
+          "La orientación espacial del orbital atómico",
+          "El volumen total de la capa electrónica",
+          "El nivel energético principal del electrón",
+          "La velocidad angular de rotación del electrón"
+        ],
+        correct: 0,
+        hint: "Diferencia por ejemplo los orbitales $p_x, p_y, p_z$.",
+        explanation: "El número cuántico magnético $m_\\ell$ determina la orientación espacial de la nube electrónica u orbital frente a un campo magnético externo."
+      },
+      {
+        id: 15,
+        category: "Principios de Llenado",
+        question: "¿En qué consiste la Regla de Hund o Principio de Máxima Multiplicidad?",
+        options: [
+          "Los electrones llenan primero las capas de menor energía",
+          "Los orbitales degenerados se ocupan primero individualmente con espines paralelos",
+          "Ningún orbital puede tener más de dos electrones",
+          "El electrón busca siempre el valor de $m_s = -\\frac{1}{2}$"
+        ],
+        correct: 1,
+        hint: "Es la 'regla del autobús': los pasajeros prefieren asientos vacíos antes de sentarse juntos.",
+        explanation: "La regla de Hund establece que en un conjunto de orbitales de igual energía (degenerados), la menor energía se alcanza cuando los electrones ocupan el máximo número de orbitales con espines paralelos."
+      },
+      {
+        id: 16,
+        category: "Configuraciones Electrónicas",
+        question: "¿Cuántos electrones de valencia tiene el Selenio ($Z = 34$) en estado fundamental?",
+        options: [
+          "$4$ electrones de valencia",
+          "$6$ electrones de valencia",
+          "$16$ electrones de valencia",
+          "$2$ electrones de valencia"
+        ],
+        correct: 1,
+        hint: "Escribe la configuración $[\text{Ar}] 4s^2 3d^{10} 4p^4$ y cuenta los electrones en la capa más externa ($n=4$).",
+        explanation: "La configuración del Selenio es $[\text{Ar}] 4s^2 3d^{10} 4p^4$. Los electrones del nivel más externo ($n=4$) son $2$ (en $4s$) + $4$ (en $4p$) = $6$ electrones de valencia."
+      },
+      {
+        id: 17,
+        category: "Estructura Electrónica",
+        question: "¿A qué denominamos orbitales DEGENERADOS en Química?",
+        options: [
+          "A orbitales que han perdido todos sus electrones",
+          "A orbitales de subniveles diferentes que tienen la misma forma",
+          "A un conjunto de orbitales que poseen exactamente la misma energía",
+          "A orbitales que no cumplen el principio de Pauli"
+        ],
+        correct: 2,
+        hint: "Por ejemplo, los tres orbitales del subnivel $2p$ ($2p_x, 2p_y, 2p_z$) en un átomo libre.",
+        explanation: "Orbitales degenerados son aquellos orbitales que pertenecen al mismo subnivel y, por lo tanto, poseen exactamente el mismo valor de energía en un átomo aislado."
+      },
+      {
+        id: 18,
+        category: "Anomalías y Excepciones",
+        question: "¿Cuál es la configuración electrónica en estado fundamental del Cobre ($Z = 29$)?",
+        options: [
+          "$[\\text{Ar}] 4s^2 3d^9$",
+          "$[\\text{Ar}] 4s^1 3d^{10}$",
+          "$[\\text{Ar}] 4s^0 3d^{11}$",
+          "$[\\text{Ar}] 4s^2 3d^{10}$"
+        ],
+        correct: 1,
+        hint: "El Cobre sufre anomalía para lograr un subnivel $3d^{10}$ totalmente lleno.",
+        explanation: "El Cobre presenta la anomalía $[\text{Ar}] 4s^1 3d^{10}$. Promociona un electrón del subnivel $4s$ al $3d$ para completar la capa $d$, ganando una enorme estabilidad."
+      },
+      {
+        id: 19,
+        category: "Estructura Electrónica",
+        question: "¿Cuál es el número máximo de electrones que pueden ocupar un ÚNICO orbital $5d_{xy}$?",
+        options: [
+          "$2$ electrones",
+          "$5$ electrones",
+          "$10$ electrones",
+          "$1$ electrón"
+        ],
+        correct: 0,
+        hint: "¡Ojo a la trampa! Preguntan por un ÚNICO orbital especifico, no por todo el subnivel $5d$.",
+        explanation: "Independientemente de si es un orbital $1s$, $3p_z$ o $5d_{xy}$, un ÚNICO orbital atómico solo puede albergar como máximo 2 electrones (con espines opuestos)."
+      },
+      {
+        id: 20,
+        category: "Estructura Electrónica",
+        question: "¿Cuál de las siguientes configuraciones corresponde a un átomo de Sodio ($Z = 11$) en un ESTADO EXCITADO?",
+        options: [
+          "$1s^2 2s^2 2p^6 3s^1$",
+          "$1s^2 2s^2 2p^6 3p^1$",
+          "$1s^2 2s^2 2p^6$",
+          "$1s^2 2s^2 2p^5 3s^2$"
+        ],
+        correct: 1,
+        hint: "El estado fundamental es $1s^2 2s^2 2p^6 3s^1$. En estado excitado, un electrón promociona a un nivel superior.",
+        explanation: "En $1s^2 2s^2 2p^6 3p^1$, el electrón del subnivel $3s$ ha absorbido energía y ha saltado al subnivel $3p$. Sigue teniendo 11 electrones pero está en estado excitado."
+      }
+    ];
+
+    // Variables de Estado de la App
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let streak = 0;
+    let userAnswers = [];
+    let answeredCurrent = false;
+
+    // Gemnis API Settings
+    const GEMINI_API_KEY = "";
+
+    // FORMATO KATEX SEGURO
+    function formatMath(str) {
+      if (!str) return '';
+      return str.replace(/\$([^\$]+)\$/g, (match, math) => {
+        try {
+          return katex.renderToString(math, { throwOnError: false });
+        } catch (e) {
+          return math;
+        }
+      });
+    }
+
+    function showToast(text) {
+      const el = document.getElementById('toast-msg');
+      el.innerText = text;
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 3500);
+    }
+
+    // FLUJO DEL TEST
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      streak = 0;
+      userAnswers = [];
+      
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('results-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      answeredCurrent = false;
+      const q = questions[currentQuestionIndex];
+
+      document.getElementById('question-badge').innerText = `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`;
+      document.getElementById('category-badge').innerText = q.category;
+      document.getElementById('score-counter').innerText = score;
+      document.getElementById('streak-counter').innerText = streak;
+
+      const pct = ((currentQuestionIndex) / questions.length) * 100;
+      document.getElementById('progress-bar').style.width = `${pct}%`;
+
+      document.getElementById('question-text').innerHTML = formatMath(q.question);
+      
+      // Reset hint
+      document.getElementById('hint-box').classList.add('hidden');
+      document.getElementById('hint-box').innerHTML = formatMath(q.hint);
+
+      // Options
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn w-full text-left p-4 rounded-xl glass-card glass-card-hover font-medium text-sm border border-slate-700/60 flex items-center gap-3 transition';
+        btn.onclick = () => selectOption(idx);
+        
+        const letter = String.fromCharCode(65 + idx);
+        btn.innerHTML = `
+          <span class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-600 flex items-center justify-center font-bold text-xs text-indigo-300 shrink-0">${letter}</span>
+          <span class="flex-grow text-slate-200">${formatMath(opt)}</span>
+        `;
+        optionsContainer.appendChild(btn);
+      });
+
+      // Feedback reset
+      document.getElementById('feedback-card').classList.add('hidden');
+      document.getElementById('ai-deep-explanation').classList.add('hidden');
+    }
+
+    function toggleHint() {
+      const box = document.getElementById('hint-box');
+      box.classList.toggle('hidden');
+    }
+
+    function selectOption(selectedIndex) {
+      if (answeredCurrent) return;
+      answeredCurrent = true;
+
+      const q = questions[currentQuestionIndex];
+      const isCorrect = selectedIndex === q.correct;
+
+      if (isCorrect) {
+        score++;
+        streak++;
+      } else {
+        streak = 0;
+      }
+
+      userAnswers.push({
+        questionIndex: currentQuestionIndex,
+        selected: selectedIndex,
+        isCorrect: isCorrect
+      });
+
+      document.getElementById('score-counter').innerText = score;
+      document.getElementById('streak-counter').innerText = streak;
+
+      // Style options
+      const buttons = document.getElementById('options-container').children;
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+        if (i === q.correct) {
+          buttons[i].className = 'w-full text-left p-4 rounded-xl bg-emerald-500/20 border-2 border-emerald-500 font-medium text-sm flex items-center gap-3 text-emerald-200';
+        } else if (i === selectedIndex && !isCorrect) {
+          buttons[i].className = 'w-full text-left p-4 rounded-xl bg-rose-500/20 border-2 border-rose-500 font-medium text-sm flex items-center gap-3 text-rose-200';
+        } else {
+          buttons[i].className = 'w-full text-left p-4 rounded-xl glass-card opacity-40 text-sm flex items-center gap-3';
+        }
+      }
+
+      // Show feedback
+      const fbCard = document.getElementById('feedback-card');
+      const fbTitle = document.getElementById('feedback-title');
+      const fbExpl = document.getElementById('feedback-explanation');
+
+      if (isCorrect) {
+        fbCard.className = 'glass-card rounded-2xl p-6 border-l-4 border-l-emerald-500 space-y-4 fade-in glow-emerald';
+        fbTitle.className = 'flex items-center gap-2 font-bold text-lg text-emerald-400';
+        fbTitle.innerHTML = `<span>🎉</span> <span>¡Respuesta Correcta del Profe!</span>`;
+      } else {
+        fbCard.className = 'glass-card rounded-2xl p-6 border-l-4 border-l-rose-500 space-y-4 fade-in';
+        fbTitle.className = 'flex items-center gap-2 font-bold text-lg text-rose-400';
+        fbTitle.innerHTML = `<span>❌</span> <span>¡Ojo! Respuesta Incorrecta</span>`;
+      }
+
+      fbExpl.innerHTML = formatMath(q.explanation);
+      fbCard.classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('results-screen').classList.remove('hidden');
+
+      const grade = (score / questions.length) * 10;
+      document.getElementById('final-grade').innerText = grade.toFixed(1);
+
+      const emojiElem = document.getElementById('result-emoji');
+      const badgeElem = document.getElementById('grade-badge');
+      const feedbackElem = document.getElementById('teacher-feedback');
+
+      if (grade >= 9) {
+        emojiElem.innerText = '🏆';
+        badgeElem.className = 'inline-block px-4 py-1.5 rounded-full text-sm font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        badgeElem.innerText = 'Sobresaliente / Matrícula de Honor';
+        feedbackElem.innerText = '¡Impresionante nivel! Has demostrado un dominio total de los números cuánticos, reglas de llenado y configuraciones complejas. Estás listo para sacar un 10 en el examen de Química. ¡Enhorabuena!';
+      } else if (grade >= 7) {
+        emojiElem.innerText = '🌟';
+        badgeElem.className = 'inline-block px-4 py-1.5 rounded-full text-sm font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30';
+        badgeElem.innerText = 'Notable Alto';
+        feedbackElem.innerText = '¡Muy buen trabajo! Tienes claros los conceptos fundamentales y los principios de Aufbau. Solo te han fallado pequeños detalles o alguna excepción de las configuraciones. Repasa la chuleta y serás imbatible.';
+      } else if (grade >= 5) {
+        emojiElem.innerText = '👍';
+        badgeElem.className = 'inline-block px-4 py-1.5 rounded-full text-sm font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        badgeElem.innerText = 'Aprobado - En Progreso';
+        feedbackElem.innerText = '¡Has aprobado el cuestionario! Tienes la base suficiente, pero te sugiero revisar las excepciones como el Cromo/Cobre y la formación de cationes (dónde se pierden primero los electrones). ¡Ánimo!';
+      } else {
+        emojiElem.innerText = '📚';
+        badgeElem.className = 'inline-block px-4 py-1.5 rounded-full text-sm font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30';
+        badgeElem.innerText = 'Necesita Repaso';
+        feedbackElem.innerText = 'No te preocupes, al principio los números cuánticos pueden parecer un laberinto de coordenadas. Te recomiendo abrir la "Chuleta del Profe", repasar los valores de l y ml, y repetir el test.';
+      }
+
+      renderCategoryBreakdown();
+    }
+
+    function renderCategoryBreakdown() {
+      const categories = {};
+      
+      questions.forEach((q, idx) => {
+        if (!categories[q.category]) {
+          categories[q.category] = { total: 0, correct: 0 };
+        }
+        categories[q.category].total++;
+        if (userAnswers[idx] && userAnswers[idx].isCorrect) {
+          categories[q.category].correct++;
+        }
+      });
+
+      const container = document.getElementById('category-breakdown');
+      container.innerHTML = '';
+
+      Object.keys(categories).forEach(cat => {
+        const data = categories[cat];
+        const pct = Math.round((data.correct / data.total) * 100);
+
+        const row = document.createElement('div');
+        row.className = 'space-y-1';
+        row.innerHTML = `
+          <div class="flex justify-between text-xs font-semibold text-slate-300">
+            <span>${cat} (${data.correct}/${data.total})</span>
+            <span class="${pct >= 70 ? 'text-emerald-400' : (pct >= 50 ? 'text-amber-400' : 'text-rose-400')}">${pct}%</span>
+          </div>
+          <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+            <div class="h-full ${pct >= 70 ? 'bg-emerald-500' : (pct >= 50 ? 'bg-amber-500' : 'bg-rose-500')} transition-all duration-500" style="width: ${pct}%"></div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function restartQuiz() {
+      startQuiz();
+    }
+
+    async function callGeminiText(prompt, systemInstruction = "") {
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
+      const payload = { contents: [{ parts: [{ text: prompt }] }] };
+      if (systemInstruction) {
+        payload.systemInstruction = { parts: [{ text: systemInstruction }] };
+      }
+      
+      let retries = 0;
+      while (retries < 3) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const result = await response.json();
+          return result.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo obtener respuesta del Profe Álex.";
+        } catch (e) {
+          retries++;
+          await new Promise(r => setTimeout(r, 1000 * Math.pow(2, retries)));
+        }
+      }
+      return "Error de conexión con la IA. Inténtalo de nuevo.";
+    }
+
+    // Gemini Deep Explanation
+    async function askAiDeepExplanation() {
+      const q = questions[currentQuestionIndex];
+      const deepBox = document.getElementById('ai-deep-explanation');
+      const deepText = document.getElementById('ai-deep-text');
+      const btn = document.getElementById('ai-explain-btn');
+
+      deepBox.classList.remove('hidden');
+      deepText.innerHTML = "<em>El Profe Álex IA está redactando una explicación detallada...</em>";
+      btn.disabled = true;
+
+      const prompt = `Actúa como el Profe Álex, profesor de Química de 1º de Bachillerato.
+Pregunta: "${q.question}"
+Respuesta correcta: "${q.options[q.correct]}"
+Explicación breve: "${q.explanation}"
+
+Proporciona un desglose extendido con pasos de deducción y por qué las otras opciones son incorrectas. Utiliza notación TeX delimitada por $ para fórmulas.`;
+
+      const reply = await callGeminiText(prompt);
+      deepText.innerHTML = formatMath(reply);
+      btn.disabled = false;
+    }
+
+    // TTS Voice Explanation
+    function pcmToWav(pcm16, sampleRate = 24000) {
+      const numChannels = 1;
+      const bitsPerSample = 16;
+      const byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+      const blockAlign = numChannels * (bitsPerSample / 8);
+      const dataSize = pcm16.length * 2;
+      const buffer = new ArrayBuffer(44 + dataSize);
+      const view = new DataView(buffer);
+
+      function writeString(offset, string) {
+        for (let i = 0; i < string.length; i++) {
+          view.setUint8(offset + i, string.charCodeAt(i));
+        }
+      }
+
+      writeString(0, 'RIFF');
+      view.setUint32(4, 36 + dataSize, true);
+      writeString(8, 'WAVE');
+      writeString(12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, numChannels, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, byteRate, true);
+      view.setUint16(32, blockAlign, true);
+      view.setUint16(34, bitsPerSample, true);
+      writeString(36, 'data');
+      view.setUint32(40, dataSize, true);
+
+      let offset = 44;
+      for (let i = 0; i < pcm16.length; i++, offset += 2) {
+        view.setInt16(offset, pcm16[i], true);
+      }
+      return new Blob([buffer], { type: 'audio/wav' });
+    }
+
+    function base64ToArrayBuffer(base64) {
+      const binaryString = atob(base64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      return bytes.buffer;
+    }
+
+    let currentAudio = null;
+    async function speakText(text) {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${GEMINI_API_KEY}`;
+      const payload = {
+        contents: [{ parts: [{ text: "Explicación del profesor: " + text.replace(/\$/g, '') }] }],
+        generationConfig: {
+          responseModalities: ["AUDIO"],
+          speechConfig: {
+            voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } }
+          }
+        }
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        const part = result?.candidates?.[0]?.content?.parts?.[0];
+        const audioData = part?.inlineData?.data;
+        const mimeType = part?.inlineData?.mimeType || "";
+
+        if (audioData) {
+          let sampleRate = 24000;
+          const match = mimeType.match(/rate=(\d+)/);
+          if (match) sampleRate = parseInt(match[1], 10);
+
+          const pcmData = base64ToArrayBuffer(audioData);
+          const pcm16 = new Int16Array(pcmData);
+          const wavBlob = pcmToWav(pcm16, sampleRate);
+          const audioUrl = URL.createObjectURL(wavBlob);
+          currentAudio = new Audio(audioUrl);
+          currentAudio.play();
+        }
+      } catch (err) {
+        console.error("Error al reproducir audio TTS:", err);
+      }
+    }
+
+    function speakCurrentExplanation() {
+      const q = questions[currentQuestionIndex];
+      speakText(q.explanation);
+    }
+
+    // Modal Chat
+    function toggleAiChatModal() {
+      const modal = document.getElementById('chat-modal');
+      modal.classList.toggle('hidden');
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatContainer = document.getElementById('chat-messages');
+
+      const userDiv = document.createElement('div');
+      userDiv.className = "bg-slate-800 border border-slate-700 p-3 rounded-xl text-slate-100 max-w-[85%] ml-auto";
+      userDiv.innerText = text;
+      chatContainer.appendChild(userDiv);
+
+      input.value = '';
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      const botDiv = document.createElement('div');
+      botDiv.className = "bg-indigo-950/50 border border-indigo-800/40 p-3 rounded-xl text-indigo-100 max-w-[85%]";
+      botDiv.innerHTML = "<em>El Profe Álex está pensando...</em>";
+      chatContainer.appendChild(botDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      const systemPrompt = "Eres el Profe Álex, profesor de Química de 1º de Bachillerato. Responde con paciencia y claridad. Usa LaTeX delimitado por $ para fórmulas y números cuánticos.";
+      const reply = await callGeminiText(text, systemPrompt);
+
+      botDiv.innerHTML = formatMath(reply);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Modal Generator
+    function openAiGeneratorModal() {
+      document.getElementById('ai-generator-modal').classList.remove('hidden');
+    }
+    function closeAiGeneratorModal() {
+      document.getElementById('ai-generator-modal').classList.add('hidden');
+    }
+
+    async function generateCustomAiQuestion() {
+      const topic = document.getElementById('ai-topic-input').value.trim() || "Números cuánticos e iones";
+      const status = document.getElementById('gen-q-status');
+      const btn = document.getElementById('gen-q-btn');
+
+      status.classList.remove('hidden');
+      btn.disabled = true;
+
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
+      const prompt = `Crea 1 pregunta tipo test de Química nivel 1º Bachillerato sobre el tema: "${topic}". Incluye 4 opciones, el índice de la opción correcta (0-3), una pista y una explicación pedagógica completa.`;
+
+      const schema = {
+        type: "OBJECT",
+        properties: {
+          category: { type: "STRING" },
+          question: { type: "STRING" },
+          options: { type: "ARRAY", items: { type: "STRING" } },
+          correct: { type: "INTEGER" },
+          hint: { type: "STRING" },
+          explanation: { type: "STRING" }
+        },
+        required: ["category", "question", "options", "correct", "hint", "explanation"]
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              responseMimeType: "application/json",
+              responseSchema: schema
+            }
+          })
+        });
+        const result = await response.json();
+        const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+        const newQ = JSON.parse(jsonText);
+        newQ.id = questions.length + 1;
+
+        questions.push(newQ);
+        closeAiGeneratorModal();
+        showToast(`¡Pregunta sobre "${topic}" añadida con éxito!`);
+      } catch (err) {
+        showToast("Error al generar la pregunta con IA.");
+      } finally {
+        status.classList.add('hidden');
+        btn.disabled = false;
+      }
+    }
+
+    // Modal Vision
+    function openVisionModal() {
+      document.getElementById('vision-modal').classList.remove('hidden');
+    }
+    function closeVisionModal() {
+      document.getElementById('vision-modal').classList.add('hidden');
+    }
+
+    let selectedVisionBase64 = null;
+    let selectedVisionMime = null;
+
+    document.getElementById('vision-file-input').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      selectedVisionMime = file.type;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const fullDataUrl = evt.target.result;
+        selectedVisionBase64 = fullDataUrl.split(',')[1];
+        document.getElementById('vision-img-element').src = fullDataUrl;
+        document.getElementById('vision-preview').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    async function analyzeVisionImage() {
+      if (!selectedVisionBase64) {
+        showToast("Selecciona una imagen primero.");
+        return;
+      }
+
+      const resBox = document.getElementById('vision-result');
+      const btn = document.getElementById('vision-analyze-btn');
+      resBox.classList.remove('hidden');
+      resBox.innerHTML = "<em>El Profe Álex IA está analizando la imagen...</em>";
+      btn.disabled = true;
+
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
+      const payload = {
+        contents: [{
+          role: "user",
+          parts: [
+            { text: "Actúa como el Profe Álex de Química. Analiza la imagen con el problema o apunte de Química, transcríbelo brevemente y da la solución paso a paso explicándolo con claridad para 1º Bachillerato. Utiliza formato KaTeX ($)." },
+            { inlineData: { mimeType: selectedVisionMime, data: selectedVisionBase64 } }
+          ]
+        }]
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo interpretar la imagen.";
+        resBox.innerHTML = formatMath(text);
+      } catch (err) {
+        resBox.innerHTML = "Error al comunicarse con Gemini Vision.";
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // Modal Chuleta
+    function openCheatsheet() {
+      document.getElementById('cheatsheet-modal').classList.remove('hidden');
+    }
+
+    function closeCheatsheet() {
+      document.getElementById('cheatsheet-modal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
